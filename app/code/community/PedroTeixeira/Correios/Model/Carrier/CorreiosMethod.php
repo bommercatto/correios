@@ -400,7 +400,12 @@ class PedroTeixeira_Correios_Model_Carrier_CorreiosMethod
         }else{
             $method->setMethodTitle($shipping_data[0]);
         }
+        
+        //Check if is free method;
 
+        if($this->getConfigData('free_method') == $shipping_method && Gdav_Cmon::canBuyWithFreeShipping()){
+            $shippingPrice = $shippingCost = 0;
+        }
         $method->setPrice($shippingPrice);
         $method->setCost($shippingCost);
 
@@ -515,7 +520,7 @@ class PedroTeixeira_Correios_Model_Carrier_CorreiosMethod
 
         $this->_postMethods = $freeMethod;
         $this->_postMethodsExplode = array($freeMethod);       
-
+        
         // Tranform free shipping weight
         if($this->getConfigData('weight_type') == 'gr')
         {
